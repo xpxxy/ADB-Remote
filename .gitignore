@@ -1,0 +1,15 @@
+# Build output directories
+dist/
+build/
+out/
+
+# Compiled output
+*.class
+*.jar
+*.war
+*.ear
+*.spec
+
+# IDE build folders
+target/
+bin/

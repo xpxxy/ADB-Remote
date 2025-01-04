@@ -9,7 +9,7 @@ out/
 *.war
 *.ear
 *.spec
-
+*.json
 # IDE build folders
 target/
 bin/

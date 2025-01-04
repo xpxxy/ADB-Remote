@@ -57,16 +57,7 @@ STRINGS = {
 
 class ADBDebugGUI:
     def __init__(self):
-        # Determine language
-        self.lang = self.load_settings().get('language', locale.getdefaultlocale()[0])
-        if self.lang not in STRINGS:
-            self.lang = 'en'
-            
-        self.root = tk.Tk()
-        self.root.title(STRINGS[self.lang]['title'])
-        self.root.geometry("400x300")
-        
-        # Get the application path
+        # Get the application path first
         if getattr(sys, 'frozen', False):
             # If running as exe (PyInstaller)
             self.app_path = os.path.dirname(sys.executable)
@@ -74,8 +65,15 @@ class ADBDebugGUI:
             # If running as script
             self.app_path = os.path.dirname(os.path.abspath(__file__))
             
-        # Load saved settings
+        # Then load settings and determine language
         self.settings = self.load_settings()
+        self.lang = self.settings.get('language', locale.getdefaultlocale()[0])
+        if self.lang not in STRINGS:
+            self.lang = 'en'
+            
+        self.root = tk.Tk()
+        self.root.title(STRINGS[self.lang]['title'])
+        self.root.geometry("400x300")
         
         # Create menu bar
         self.menu_bar = tk.Menu(self.root)
@@ -89,8 +87,17 @@ class ADBDebugGUI:
         # Language submenu
         self.language_menu = tk.Menu(self.settings_menu, tearoff=0)
         self.settings_menu.add_cascade(label=STRINGS[self.lang]['language'], menu=self.language_menu)
-        self.language_menu.add_command(label=STRINGS[self.lang]['chinese'], command=lambda: self.change_language('zh_CN'))
-        self.language_menu.add_command(label=STRINGS[self.lang]['english'], command=lambda: self.change_language('en'))
+        
+        # Add language options with radio buttons
+        self.lang_var = tk.StringVar(value=self.lang)
+        self.language_menu.add_radiobutton(label=STRINGS[self.lang]['chinese'], 
+                                         command=lambda: self.change_language('zh_CN'),
+                                         variable=self.lang_var,
+                                         value='zh_CN')
+        self.language_menu.add_radiobutton(label=STRINGS[self.lang]['english'],
+                                         command=lambda: self.change_language('en'),
+                                         variable=self.lang_var,
+                                         value='en')
         
         # Main frame
         self.main_frame = ttk.Frame(self.root, padding="10")
@@ -152,6 +159,9 @@ class ADBDebugGUI:
         self.start_button.configure(text=STRINGS[self.lang]['start_debug'])
         self.stop_button.configure(text=STRINGS[self.lang]['stop_debug'])
         self.status_var.set(STRINGS[self.lang]['status_ready'])
+        # Update language menu labels
+        self.language_menu.entryconfig(0, label=STRINGS[self.lang]['chinese'])
+        self.language_menu.entryconfig(1, label=STRINGS[self.lang]['english'])
 
     def load_settings(self):
         settings_path = os.path.join(self.app_path, 'settings.json')

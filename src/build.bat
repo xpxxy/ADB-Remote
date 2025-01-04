@@ -1,2 +1,4 @@
 @echo off
-pyinstaller --noconsole --icon=favicon.ico --windowed --onefile gui.py
+pyinstaller gui.spec
+rmdir /s /q build
+exit

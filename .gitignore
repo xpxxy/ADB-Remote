@@ -8,7 +8,6 @@ out/
 *.jar
 *.war
 *.ear
-*.spec
 *.json
 # IDE build folders
 target/

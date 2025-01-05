@@ -2,10 +2,13 @@
 A Basic simple tool for adb debuging without using terminal
 
 ## Build:  
-**Windows**:  
-* Run build.bat  
+**Windows Only**:  
+* Run build.bat
+* Build through **Pyinstaller**
 * You will get an executable file on /dist  
 
-**Others**:  
-* Simply run gui.py
+## Usage:
+* Run executable file or simply run *gui.py* in any terminal
+
+
   
